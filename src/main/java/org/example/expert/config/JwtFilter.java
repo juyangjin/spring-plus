@@ -45,11 +45,9 @@ public class JwtFilter implements Filter {
             return;
         }
 
-        String jwt = jwtUtil.substringToken(bearerJwt);
-
         try {
             // JWT 유효성 검사와 claims 추출
-            Claims claims = jwtUtil.extractClaims(jwt);
+            Claims claims = jwtUtil.extractClaims(jwtUtil.substringToken(bearerJwt));
             if (claims == null) {
                 httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "잘못된 JWT 토큰입니다.");
                 return;
