@@ -1,5 +1,7 @@
 package org.example.expert.domain.auth.service;
 
+import jakarta.servlet.http.HttpServletRequest;
+import javax.swing.Spring;
 import lombok.RequiredArgsConstructor;
 import org.example.expert.config.JwtUtil;
 import org.example.expert.config.PasswordEncoder;
@@ -12,6 +14,7 @@ import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.user.entity.User;
 import org.example.expert.domain.user.enums.UserRole;
 import org.example.expert.domain.user.repository.UserRepository;
+import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final HttpServletRequest httpServletRequest;
 
     @Transactional
     public SignupResponse signup(SignupRequest signupRequest) {
@@ -38,6 +42,7 @@ public class AuthService {
         User newUser = new User(
                 signupRequest.getEmail(),
                 encodedPassword,
+                signupRequest.getNickname(),
                 userRole
         );
         User savedUser = userRepository.save(newUser);
@@ -58,6 +63,6 @@ public class AuthService {
 
         String bearerToken = jwtUtil.createToken(user.getId(), user.getEmail(), user.getUserRole());
 
-        return new SigninResponse(bearerToken);
+        return new SigninResponse(user.getNickname(),bearerToken);
     }
 }
