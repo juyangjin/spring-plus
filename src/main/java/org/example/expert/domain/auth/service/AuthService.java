@@ -46,10 +46,9 @@ public class AuthService {
                 userRole
         );
         User savedUser = userRepository.save(newUser);
+        String msg = "회원가입 완료";
 
-        String bearerToken = jwtUtil.createToken(savedUser.getId(), savedUser.getEmail(), userRole);
-
-        return new SignupResponse(bearerToken);
+        return new SignupResponse(msg);
     }
 
     public SigninResponse signin(SigninRequest signinRequest) {
