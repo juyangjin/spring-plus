@@ -16,7 +16,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable long userId) {
+    public ResponseEntity<UserResponse> getUser( @Auth AuthUser authUser, @PathVariable long userId) {
         return ResponseEntity.ok(userService.getUser(userId));
     }
 
