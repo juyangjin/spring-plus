@@ -26,7 +26,6 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-    private final HttpServletRequest httpServletRequest;
 
     @Transactional
     public SignupResponse signup(SignupRequest signupRequest) {
