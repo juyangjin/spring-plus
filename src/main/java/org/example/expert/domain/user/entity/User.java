@@ -1,10 +1,13 @@
 package org.example.expert.domain.user.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.expert.domain.common.dto.AuthUser;
 import org.example.expert.domain.common.entity.Timestamped;
+import org.example.expert.domain.manager.entity.Manager;
 import org.example.expert.domain.user.enums.UserRole;
 
 @Getter
@@ -21,6 +24,7 @@ public class User extends Timestamped {
     private String password;
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
 
     public User(String email, String password,String nickname, UserRole userRole) {
         this.email = email;
