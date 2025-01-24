@@ -1,5 +1,6 @@
 package org.example.expert.domain.todo.repository;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -10,15 +11,33 @@ import jakarta.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.example.expert.domain.todo.entity.QTodo;
 import org.example.expert.domain.todo.entity.Todo;
+import org.example.expert.domain.user.entity.QUser;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
+@Repository
+@RequiredArgsConstructor
 public class TodoRepositoryImpl implements TodoRepositoryCustom{
 
-    @PersistenceContext
+    private final JPAQueryFactory jpaQueryFactory;
     private EntityManager entityManager;
+
+    @Override
+    public Optional<Todo> findByIdWithUser(Long todoId) {
+        QTodo qTodo = QTodo.todo;
+        QUser qUser = QUser.user;
+
+        return Optional.ofNullable(jpaQueryFactory.selectFrom(qTodo)
+            .leftJoin(qTodo.user, qUser).fetchJoin()
+            .where(QTodo.todo.id.eq(todoId))
+            .fetchOne());
+    }
 
     @Override
     public Page<Todo> searchByWeatherByModifiedAt(String weather, LocalDateTime startDate,
