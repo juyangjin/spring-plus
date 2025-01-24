@@ -1,13 +1,11 @@
 package org.example.expert.domain.user.entity;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.expert.domain.common.dto.AuthUser;
+import org.example.expert.config.CustomUserDetails;
 import org.example.expert.domain.common.entity.Timestamped;
-import org.example.expert.domain.manager.entity.Manager;
+
 import org.example.expert.domain.user.enums.UserRole;
 
 @Getter
@@ -39,8 +37,8 @@ public class User extends Timestamped {
         this.userRole = userRole;
     }
 
-    public static User fromAuthUser(AuthUser authUser) {
-        return new User(authUser.getId(), authUser.getEmail(), authUser.getUserRole());
+    public static User fromUserDetails(CustomUserDetails userDetails) {
+        return new User(userDetails.getId(), userDetails.getEmail(), userDetails.getUserRole());
     }
 
     public void changePassword(String password) {
